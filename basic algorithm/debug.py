@@ -1,21 +1,24 @@
-N = 100010
-arr = [0] * N
-point = 0
-first = -1
+n, m = map(int,input().split())
+maze = []
+for i in range(n):
+    row = list(map(int,input().split()))
+    maze.append(row)
 
-M = int(input())
+def bfs():
+    while len(fringe) > 0:
+        point = fringe.pop(0)
+        if point[:2] == (n-1,m-1):
+            print(point[-1])
+        for d in direction:
+            new = (point[0]+d[0],point[1]+d[1])
+            if 0<=new[0]<n and 0<=new[1]<m and new not in visited:
+                if not maze[new[0]][new[1]]:
+                    visited.add(new)
+                    fringe.append(new+(point[-1]+1,))
 
-for i in range(M):
-    command = input().split()
-    if command[0] == 'push':
-        arr[point] = command[1]
-        point += 1
-    elif command[0] == 'pop':
-        first += 1
-    elif command[0] == 'empty':
-        if point - first == 1:
-            print('yes')
-        else:
-            print('no')
-    elif command[0] == 'query':
-        print(arr[first+1])
+direction = [(-1,0),(0,1),(1,0),(0,-1)]
+fringe = [(0,0,0)]                               # need and another value to determine the path!!!
+visited = set()
+visited.add((0,0))
+path = 0
+bfs()
